@@ -1,24 +1,27 @@
-import logo from './logo.svg';
 import './App.css';
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
+
+//Importing Images
+import avertro from './images/avertro-logo.svg'
+
+//Importing Component
+import ObjectiveList from './components/ObjectivePanel/ObjectivePanle';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div className="container">
+      <header className="logo-bar">
+        <img src={avertro} alt="logo" width="250px" height="25%" />
       </header>
-    </div>
+      <Container maxWidth="xl">
+        <p>Set Security Strategy</p>
+        <hr />
+        <Box sx={{ borderRadius: '16px', background: '#fff' }}>
+          <ObjectiveList />
+        </Box>
+      </Container>
+    </div >
   );
 }
 
