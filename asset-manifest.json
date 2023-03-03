@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/avertro-app/static/css/main.fc79f42b.css",
+    "main.js": "/avertro-app/static/js/main.22efa4e9.js",
+    "static/js/787.b040d725.chunk.js": "/avertro-app/static/js/787.b040d725.chunk.js",
+    "static/media/avertro-logo.svg": "/avertro-app/static/media/avertro-logo.c57bc8d75eed8baf15995ed2e29d62c5.svg",
+    "index.html": "/avertro-app/index.html",
+    "main.fc79f42b.css.map": "/avertro-app/static/css/main.fc79f42b.css.map",
+    "main.22efa4e9.js.map": "/avertro-app/static/js/main.22efa4e9.js.map",
+    "787.b040d725.chunk.js.map": "/avertro-app/static/js/787.b040d725.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fc79f42b.css",
+    "static/js/main.22efa4e9.js"
+  ]
+}
