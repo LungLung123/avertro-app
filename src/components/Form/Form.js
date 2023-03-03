@@ -15,24 +15,37 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 const Form = (props) => {
+    const [FormInputs, setFormInputs] = React.useState({})
+    const [ObjectiveValue, setObjectiveValue] = React.useState("")
     const [dateStartValue, setStartValue] = React.useState(dayjs());
     const [dateEndValue, setEndValue] = React.useState(dayjs());
     const [KmList, setKmList] = React.useState([{ keyMeasure: "" }]);
+
     const [isButtonDisabled, setIsButtonDisabled] = React.useState(false);
 
     const handleFormDelete = () => props.handleFormDelete(props.num);
 
-    const formHandler = () => {
 
+    const ObjectiveValueHandler = (e) => {
+        setObjectiveValue(e.target.value);
     };
 
     const kmTextHandler = (e, index) => {
         const data = [...KmList];
-        const { name, value } = e.target
+        const { name, value } = e.target;
         data[index][name] = value;
         setKmList(data);
-
     };
+
+    const startDateHandler = (e) => {
+        setStartValue(e);
+    };
+
+    const endDateHandler = (e) => {
+        setEndValue(e);
+    };
+
+
 
     const deleteHandler = (index) => {
         let data = [...KmList];
@@ -41,9 +54,19 @@ const Form = (props) => {
         setIsButtonDisabled(false);
     };
 
+    const updateHandler = (e) => {
+        e.preventDefault();
+        // alert(ObjectiveValue + ' ' + dateStartValue.toString() + ' ' + dateEndValue.toString() + ' ' + KmList);
+        setFormInputs({
+            Objective: ObjectiveValue,
+            StartDate: dateStartValue.toString(),
+            EndDate: dateEndValue.toString(),
+            KeyMeasure: KmList
+        });
+        console.log(FormInputs)
+    }
+
     const kmAddHandler = () => {
-        console.log("addList length")
-        console.log(KmList.length)
         if (KmList.length < 2) {
             setIsButtonDisabled(false);
         } else {
@@ -52,19 +75,6 @@ const Form = (props) => {
         let newKm = { keyMeasure: "" };
         setKmList([...KmList, newKm]);
 
-    };
-
-    const updateHandler = (e) => {
-        e.preventDefault();
-        console.log(KmList)
-    }
-
-    const startDateHandler = (newStartDateValue) => {
-        setStartValue(newStartDateValue);
-    };
-
-    const endDateHandler = (newEndDateValue) => {
-        setEndValue(newEndDateValue);
     };
     return (
         <Box sx={{
@@ -79,7 +89,7 @@ const Form = (props) => {
                     <Grid display="grid" item sm={11}>
                         <FormControl fullWidth sx={{}} variant="standard">
                             <h2>Objective {props.num}</h2>
-                            <TextField id="obj" variant="outlined" display="flex" />
+                            <TextField id="ObjectiveText" variant="outlined" display="flex" onChange={ObjectiveValueHandler} value={ObjectiveValue} />
                         </FormControl>
                     </Grid>
                 </Grid>
@@ -91,7 +101,7 @@ const Form = (props) => {
                                 InputAdornmentProps={{ position: 'start' }}
                                 inputFormat="DD/MM/YYYY"
                                 value={dateStartValue}
-                                onChange={startDateHandler}
+                                onChange={(e) => startDateHandler(e)}
                                 renderInput={(params) => <TextField {...params} />}
                             />
                         </Grid>
@@ -102,7 +112,7 @@ const Form = (props) => {
                                 InputAdornmentProps={{ position: 'start' }}
                                 inputFormat="DD/MM/YYYY"
                                 value={dateEndValue}
-                                onChange={endDateHandler}
+                                onChange={(e) => endDateHandler(e)}
                                 renderInput={(params) => <TextField {...params} />}
                             />
                         </Grid>
@@ -123,7 +133,7 @@ const Form = (props) => {
                             return (
                                 <Grid key={index} container alignItems="center" sx={{ marginBottom: "15px" }} spacing={2.5}>
                                     <Grid display="grid" item sm={11}>
-                                        <input name="keyMeasure" id="keyMeasure" type="text" onChange={(e) => kmTextHandler(e, index)} value={singleKm.keyMeasure} />
+                                        <TextField name="keyMeasure" onChange={(e) => kmTextHandler(e, index)} value={singleKm.keyMeasure} />
                                     </Grid>
                                     <Grid item sm={1}>
                                         {KmList.length > 1 && (
