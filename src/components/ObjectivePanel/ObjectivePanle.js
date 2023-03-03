@@ -36,7 +36,7 @@ var count = 1;
 
 function SecTabs() {
     const [value, setValue] = React.useState(0);
-    const [FormList, setFormList] = React.useState([]);
+    const [FormList, setFormList] = React.useState([<Form />]);
 
     const [isButtonDisabled, setIsButtonDisabled] = React.useState(false);
 
@@ -56,8 +56,14 @@ function SecTabs() {
     }
 
     const handleDelete = (index) => {
-        const newFormList = FormList.filter((item) => item.name !== index);
-        setFormList(newFormList)
+        let data = [...FormList];
+        data.splice(index, 1)
+        setFormList(data)
+        if (FormList.length === 2) {
+            setIsButtonDisabled(true);
+        } else {
+            setIsButtonDisabled(false);
+        }
     }
 
     const handleChange = (event, newValue) => {
@@ -77,7 +83,11 @@ function SecTabs() {
             </ContainterPanel>
             <ContainterPanel value={value} index={1}>
                 <Box sx={{ marginBottom: "20px" }}>
-                    {FormList}
+                    {FormList.map((singleForm, index) => {
+                        return (
+                            <Form key={index} num={index + 1} handleDelete={() => handleDelete(index)} value={singleForm} />
+                        )
+                    })}
                 </Box>
                 <Box sx={{ paddingTop: 2, display: 'flex', justifyContent: 'flex-end' }}>
                     <Button disabled={isButtonDisabled} onClick={objectiveHandler} variant="contained">Add Objectives</Button>

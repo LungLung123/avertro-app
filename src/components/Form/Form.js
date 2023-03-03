@@ -1,6 +1,6 @@
 import './Form.css';
 
-import React, { useState } from 'react';
+import React from 'react';
 import dayjs from 'dayjs';
 import Grid from '@mui/material/Grid';
 import FormControl from '@mui/material/FormControl';
@@ -16,20 +16,28 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 const Form = (props) => {
     const [dateValue, setValue] = React.useState(dayjs());
-    const [KmList, setKmList] = React.useState([]);
-    const [kmText, setKmText] = useState("");
+    const [KmList, setKmList] = React.useState([{ km: '' }]);
     const [isButtonDisabled, setIsButtonDisabled] = React.useState(false);
 
     const handleDelete = () => props.handleDelete(props.num);
 
     const deleteHandler = (index) => {
-        const newKmList = KmList.filter(el => el.id !== index);
-        setKmList(newKmList);
+        let data = [...KmList];
+        data.splice(index, 1)
+        setKmList(data);
+        console.log(KmList)
+        console.log(KmList.length)
+        if (KmList.length === 2) {
+            setIsButtonDisabled(true);
+        } else {
+            setIsButtonDisabled(false);
+        }
     };
 
-    const kmTextHandler = (e) => {
-        console.log(e.target.key);
-        console.log(e.target.value)
+    const kmTextHandler = (index, event) => {
+        let data = [...KmList];
+        data[index][event.target.input] = event.target.value;
+        setKmList(data);
     };
 
     const kmAddHandler = (e) => {
@@ -39,16 +47,18 @@ const Form = (props) => {
         } else {
             setIsButtonDisabled(false);
         }
-        setKmList(KmList.concat(
-            <Grid key={KmList.length} container alignItems="center" sx={{ marginBottom: "15px" }} spacing={2.5}>
-                <Grid display="grid" item sm={11}>
-                    <TextField variant="outlined" onChange={kmTextHandler} />
-                </Grid>
-                <Grid item sm={1}>
-                    <IconButton onClick={deleteHandler}><RemoveCircleIcon style={{ fill: "red" }} /></IconButton>
-                </Grid>
-            </Grid>
-        ));
+        let newKm = { km: "" }
+        setKmList([...KmList, newKm])
+        // setKmList(KmList.concat(
+        //     <Grid key={KmList.length} container alignItems="center" sx={{ marginBottom: "15px" }} spacing={2.5}>
+        //         <Grid display="grid" item sm={11}>
+        //             <TextField variant="outlined" onChange={kmTextHandler} />
+        //         </Grid>
+        //         <Grid item sm={1}>
+        //             <IconButton onClick={deleteHandler}><RemoveCircleIcon style={{ fill: "red" }} /></IconButton>
+        //         </Grid>
+        //     </Grid>
+        // ));
 
     };
 
@@ -111,7 +121,18 @@ const Form = (props) => {
                         </Box>
                     </Grid>
                     <FormControl fullWidth variant="standard">
-                        {KmList}
+                        {KmList.map((km, index) => {
+                            return (
+                                <Grid key={index} container alignItems="center" sx={{ marginBottom: "15px" }} spacing={2.5}>
+                                    <Grid display="grid" item sm={11}>
+                                        <TextField name="km" variant="outlined" onChange={event => kmTextHandler(index, event)} value={km.input} />
+                                    </Grid>
+                                    <Grid item sm={1}>
+                                        <IconButton onClick={() => deleteHandler(index)}><RemoveCircleIcon style={{ fill: "red" }} /></IconButton>
+                                    </Grid>
+                                </Grid>
+                            )
+                        })}
                     </FormControl>
                 </Grid>
                 <Grid sx={{ alignSelf: 'flex-end' }} item xs={6}>
