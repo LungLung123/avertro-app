@@ -64,6 +64,8 @@ const Form = (props) => {
             KeyMeasure: KmList
         });
         console.log(FormInputs)
+        localStorage.setItem(props.objectiveId, JSON.stringify(FormInputs));
+
     }
 
     const kmAddHandler = () => {
@@ -108,7 +110,10 @@ const Form = (props) => {
                         <Grid display="grid" item xs={6} >
                             <h2>End Date</h2>
                             <DesktopDatePicker
-                                disablePast={true}
+                                error
+                                id="outlined-error-helper-text"
+                                label="Error"
+                                helperText="Incorrect entry."
                                 InputAdornmentProps={{ position: 'start' }}
                                 inputFormat="DD/MM/YYYY"
                                 value={dateEndValue}
