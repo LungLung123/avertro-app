@@ -88,7 +88,7 @@ const Form = (props) => {
                 <Grid container item sm={6}>
                     <Grid display="grid" item sm={11}>
                         <FormControl fullWidth sx={{}} variant="standard">
-                            <h2>Objective {props.num}</h2>
+                            <h2>Objective {props.objectiveId + 1}</h2>
                             <TextField id="ObjectiveText" variant="outlined" display="flex" onChange={ObjectiveValueHandler} value={ObjectiveValue} />
                         </FormControl>
                     </Grid>
