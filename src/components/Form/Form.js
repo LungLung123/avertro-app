@@ -104,21 +104,24 @@ const Form = (props) => {
                                 inputFormat="DD/MM/YYYY"
                                 value={dateStartValue}
                                 onChange={(e) => startDateHandler(e)}
-                                renderInput={(params) => <TextField {...params} />}
+                                renderInput={(params) => <TextField {...params} sx={{
+                                    svg: { color: '#253a7d' },
+                                }} />}
                             />
                         </Grid>
                         <Grid display="grid" item xs={6} >
                             <h2>End Date</h2>
                             <DesktopDatePicker
-                                error
+                                minDate={dateStartValue}
                                 id="outlined-error-helper-text"
-                                label="Error"
-                                helperText="Incorrect entry."
+                                helperText="End Date Cannot be Earlier than Start Date."
                                 InputAdornmentProps={{ position: 'start' }}
                                 inputFormat="DD/MM/YYYY"
                                 value={dateEndValue}
                                 onChange={(e) => endDateHandler(e)}
-                                renderInput={(params) => <TextField {...params} />}
+                                renderInput={(params) => <TextField {...params} sx={{
+                                    svg: { color: '#253a7d' },
+                                }} />}
                             />
                         </Grid>
                     </Grid>
@@ -128,7 +131,7 @@ const Form = (props) => {
                         <Box display="flex" justifyContent="space-between">
                             <h2>Key Measures</h2>
                             <Box display="flex" justifyContent='flex-end' alignItems="center">
-                                <p>Add additional key Measures</p>
+                                <p>Add additional key measure</p>
                                 <IconButton disabled={isButtonDisabled} onClick={kmAddHandler}><AddCircleIcon style={{ fill: "#253a7d" }} /></IconButton>
                             </Box>
                         </Box>
