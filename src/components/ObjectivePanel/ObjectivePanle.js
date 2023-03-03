@@ -35,8 +35,8 @@ function a11yProps(index) {
 
 function SecTabs() {
     const [value, setValue] = React.useState(0);
-    const [FormList, setFormList] = React.useState([<Form />]);
-
+    const [FormList, setFormList] = React.useState([]);
+    const [count, setCount] = React.useState(0);
     const [isButtonDisabled, setIsButtonDisabled] = React.useState(false);
 
 
@@ -46,17 +46,15 @@ function SecTabs() {
         } else {
             setIsButtonDisabled(true);
         }
-        let newForm = <Form handleFormDelete={handleFormDelete} />
-
-        setFormList([...FormList, newForm])
+        setFormList([...FormList, (<Form key={count} objectiveId={count} handleFormDelete={handleFormDelete} />)])
+        setCount(count + 1);
     }
 
-    const handleFormDelete = (index) => {
-        let data = [...FormList];
-        data.splice(index, 1)
-        setFormList(data)
+    const handleFormDelete = (formIndex) => {
+        setFormList(FormList => {
+            return FormList.filter(FormPanel => FormPanel.props.objectiveId !== formIndex)
+        })
         setIsButtonDisabled(false);
-
     }
 
     const handleChange = (event, newValue) => {
@@ -76,11 +74,7 @@ function SecTabs() {
             </ContainterPanel>
             <ContainterPanel value={value} index={1}>
                 <Box sx={{ marginBottom: "20px" }}>
-                    {FormList.map((singleForm, index) => {
-                        return (
-                            <Form key={index} num={index + 1} handleFormDelete={() => handleFormDelete(index)} value={singleForm} />
-                        )
-                    })}
+                    {FormList}
                 </Box>
                 <Box sx={{ paddingTop: 2, display: 'flex', justifyContent: 'flex-end' }}>
                     <Button disabled={isButtonDisabled} onClick={objectiveHandler} variant="contained">Add Objectives</Button>

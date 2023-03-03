@@ -15,7 +15,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 const Form = (props) => {
-    const [FormInputs, setFormInputs] = React.useState({})
+    const [FormInputs, setFormInputs] = React.useState({});
     const [ObjectiveValue, setObjectiveValue] = React.useState("")
     const [dateStartValue, setStartValue] = React.useState(dayjs());
     const [dateEndValue, setEndValue] = React.useState(dayjs());
@@ -23,7 +23,7 @@ const Form = (props) => {
 
     const [isButtonDisabled, setIsButtonDisabled] = React.useState(false);
 
-    const handleFormDelete = () => props.handleFormDelete(props.num);
+    const handleFormDelete = () => props.handleFormDelete(props.objectiveId);
 
 
     const ObjectiveValueHandler = (e) => {
@@ -56,8 +56,8 @@ const Form = (props) => {
 
     const updateHandler = (e) => {
         e.preventDefault();
-        // alert(ObjectiveValue + ' ' + dateStartValue.toString() + ' ' + dateEndValue.toString() + ' ' + KmList);
         setFormInputs({
+            ObjectiveId: props.objectiveId,
             Objective: ObjectiveValue,
             StartDate: dateStartValue.toString(),
             EndDate: dateEndValue.toString(),
