@@ -32,7 +32,6 @@ function a11yProps(index) {
     };
 };
 
-var count = 1;
 
 function SecTabs() {
     const [value, setValue] = React.useState(0);
@@ -42,28 +41,22 @@ function SecTabs() {
 
 
     const objectiveHandler = (e) => {
-        console.log("I pressed Objective")
-        if (FormList.length === 2) {
-            setIsButtonDisabled(true);
-        } else {
+        if (FormList.length < 2) {
             setIsButtonDisabled(false);
+        } else {
+            setIsButtonDisabled(true);
         }
-        if (count === 3) {
-            count = 1;
-        }
-        setFormList(FormList.concat(<Form num={count} handleDelete={handleDelete} />));
-        count++;
+        let newForm = <Form handleFormDelete={handleFormDelete} />
+
+        setFormList([...FormList, newForm])
     }
 
-    const handleDelete = (index) => {
+    const handleFormDelete = (index) => {
         let data = [...FormList];
         data.splice(index, 1)
         setFormList(data)
-        if (FormList.length === 2) {
-            setIsButtonDisabled(true);
-        } else {
-            setIsButtonDisabled(false);
-        }
+        setIsButtonDisabled(false);
+
     }
 
     const handleChange = (event, newValue) => {
@@ -85,7 +78,7 @@ function SecTabs() {
                 <Box sx={{ marginBottom: "20px" }}>
                     {FormList.map((singleForm, index) => {
                         return (
-                            <Form key={index} num={index + 1} handleDelete={() => handleDelete(index)} value={singleForm} />
+                            <Form key={index} num={index + 1} handleFormDelete={() => handleFormDelete(index)} value={singleForm} />
                         )
                     })}
                 </Box>

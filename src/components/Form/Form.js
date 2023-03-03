@@ -15,59 +15,56 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 const Form = (props) => {
-    const [dateValue, setValue] = React.useState(dayjs());
-    const [KmList, setKmList] = React.useState([{ km: '' }]);
+    const [dateStartValue, setStartValue] = React.useState(dayjs());
+    const [dateEndValue, setEndValue] = React.useState(dayjs());
+    const [KmList, setKmList] = React.useState([{ keyMeasure: "" }]);
     const [isButtonDisabled, setIsButtonDisabled] = React.useState(false);
 
-    const handleDelete = () => props.handleDelete(props.num);
+    const handleFormDelete = () => props.handleFormDelete(props.num);
+
+    const formHandler = () => {
+
+    };
+
+    const kmTextHandler = (e, index) => {
+        const data = [...KmList];
+        const { name, value } = e.target
+        data[index][name] = value;
+        setKmList(data);
+
+    };
 
     const deleteHandler = (index) => {
         let data = [...KmList];
         data.splice(index, 1)
         setKmList(data);
-        console.log(KmList)
+        setIsButtonDisabled(false);
+    };
+
+    const kmAddHandler = () => {
+        console.log("addList length")
         console.log(KmList.length)
-        if (KmList.length === 2) {
-            setIsButtonDisabled(true);
-        } else {
+        if (KmList.length < 2) {
             setIsButtonDisabled(false);
-        }
-    };
-
-    const kmTextHandler = (index, event) => {
-        let data = [...KmList];
-        data[index][event.target.input] = event.target.value;
-        setKmList(data);
-    };
-
-    const kmAddHandler = (e) => {
-        console.log("I pressed Objective")
-        if (KmList.length === 2) {
-            setIsButtonDisabled(true);
         } else {
-            setIsButtonDisabled(false);
+            setIsButtonDisabled(true);
         }
-        let newKm = { km: "" }
-        setKmList([...KmList, newKm])
-        // setKmList(KmList.concat(
-        //     <Grid key={KmList.length} container alignItems="center" sx={{ marginBottom: "15px" }} spacing={2.5}>
-        //         <Grid display="grid" item sm={11}>
-        //             <TextField variant="outlined" onChange={kmTextHandler} />
-        //         </Grid>
-        //         <Grid item sm={1}>
-        //             <IconButton onClick={deleteHandler}><RemoveCircleIcon style={{ fill: "red" }} /></IconButton>
-        //         </Grid>
-        //     </Grid>
-        // ));
+        let newKm = { keyMeasure: "" };
+        setKmList([...KmList, newKm]);
 
     };
+
+    const updateHandler = (e) => {
+        e.preventDefault();
+        console.log(KmList)
+    }
 
     const startDateHandler = (newStartDateValue) => {
-        setValue(newStartDateValue);
+        setStartValue(newStartDateValue);
     };
 
     const endDateHandler = (newEndDateValue) => {
-        setValue(newEndDateValue);
+        setEndValue(newEndDateValue);
     };
     return (
         <Box sx={{
@@ -93,7 +90,7 @@ const Form = (props) => {
                             <DesktopDatePicker
                                 InputAdornmentProps={{ position: 'start' }}
                                 inputFormat="DD/MM/YYYY"
-                                value={dateValue}
+                                value={dateStartValue}
                                 onChange={startDateHandler}
                                 renderInput={(params) => <TextField {...params} />}
                             />
@@ -101,9 +98,10 @@ const Form = (props) => {
                         <Grid display="grid" item xs={6} >
                             <h2>End Date</h2>
                             <DesktopDatePicker
+                                disablePast={true}
                                 InputAdornmentProps={{ position: 'start' }}
                                 inputFormat="DD/MM/YYYY"
-                                value={dateValue}
+                                value={dateEndValue}
                                 onChange={endDateHandler}
                                 renderInput={(params) => <TextField {...params} />}
                             />
@@ -121,14 +119,16 @@ const Form = (props) => {
                         </Box>
                     </Grid>
                     <FormControl fullWidth variant="standard">
-                        {KmList.map((km, index) => {
+                        {KmList.map((singleKm, index) => {
                             return (
                                 <Grid key={index} container alignItems="center" sx={{ marginBottom: "15px" }} spacing={2.5}>
                                     <Grid display="grid" item sm={11}>
-                                        <TextField name="km" variant="outlined" onChange={event => kmTextHandler(index, event)} value={km.input} />
+                                        <input name="keyMeasure" id="keyMeasure" type="text" onChange={(e) => kmTextHandler(e, index)} value={singleKm.keyMeasure} />
                                     </Grid>
                                     <Grid item sm={1}>
-                                        <IconButton onClick={() => deleteHandler(index)}><RemoveCircleIcon style={{ fill: "red" }} /></IconButton>
+                                        {KmList.length > 1 && (
+                                            <IconButton onClick={() => deleteHandler(index)}><RemoveCircleIcon style={{ fill: "red" }} /></IconButton>
+                                        )}
                                     </Grid>
                                 </Grid>
                             )
@@ -137,8 +137,8 @@ const Form = (props) => {
                 </Grid>
                 <Grid sx={{ alignSelf: 'flex-end' }} item xs={6}>
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                        <Button className="obj-button" variant="outlined" color="error" onClick={handleDelete.bind(this)}>Delete</Button>
-                        <Button sx={{ marginLeft: "2%" }} variant="contained">Update</Button>
+                        <Button className="obj-button" variant="outlined" color="error" onClick={handleFormDelete.bind(this)}>Delete</Button>
+                        <Button sx={{ marginLeft: "2%" }} onClick={updateHandler} variant="contained">Update</Button>
                     </Box>
                 </Grid>
             </Grid>
